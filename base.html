@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}ProCV - Professional CV Generator{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav">
+      <a class="brand" href="{{ url_for('home') }}"><span class="logo">CV</span>Pro<span class="accent">CV</span></a>
+      <nav class="links">
+        <a href="{{ url_for('home') }}#features">Features</a>
+        <a href="{{ url_for('home') }}#how">How it works</a>
+        <a href="{{ url_for('home') }}#team">Developers</a>
+      </nav>
+      <a class="btn-cta" href="{{ url_for('create_cv') }}">Create CV</a>
+    </div>
+  </header>
+
+  {% block content %}{% endblock %}
+
+  <footer class="site-footer">
+    <p><strong>ProCV</strong> &middot; Professional CV Generator</p>
+    <p class="muted">Developed by Habibullah Jamali, Mutahar Khoso &amp; Sabeen Channa</p>
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

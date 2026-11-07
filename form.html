@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block title %}Create CV - ProCV{% endblock %}
+{% block content %}
+<section class="page-head">
+  <h1>Create Your CV</h1>
+  <p>Fields marked with * are required. Everything else is optional.</p>
+</section>
+
+<main class="wrap form-wrap">
+<form action="{{ url_for('create_cv') }}" method="post" enctype="multipart/form-data">
+
+  <!-- 1. Personal -->
+  <section class="card">
+    <h2>1. Personal Information</h2>
+    <div class="photo-row">
+      <img id="photoPreview" class="photo-preview" alt="" hidden>
+      <div class="photo-placeholder" id="photoPlaceholder">Photo</div>
+      <label class="grow">Profile Photo (JPG / PNG, max 5 MB)
+        <input type="file" name="photo" id="photoInput" accept="image/png,image/jpeg,image/webp">
+      </label>
+    </div>
+    <div class="grid">
+      <label>Full Name *<input type="text" name="name" required placeholder="e.g. Ahmed Khan"></label>
+      <label>Job Title *<input type="text" name="title" required placeholder="e.g. Software Engineer"></label>
+      <label>Email *<input type="email" name="email" required placeholder="you@example.com"></label>
+      <label>Mobile Number *<input type="text" name="phone" required placeholder="+92 300 1234567"></label>
+    </div>
+    <label>Address *<input type="text" name="address" required placeholder="House / Street, City, Country"></label>
+    <label>Portfolio Link <span class="opt">(optional)</span>
+      <input type="text" name="portfolio" placeholder="yourportfolio.com">
+    </label>
+    <label>Professional Summary <span class="opt">(optional)</span>
+      <textarea name="summary" rows="4" placeholder="Write 2-4 lines about yourself, your strengths and goals..."></textarea>
+    </label>
+  </section>
+
+  <!-- 2. Experience -->
+  <section class="card">
+    <h2>2. Work Experience <span class="opt">(optional)</span></h2>
+    <div id="expBox"></div>
+    <button type="button" class="btn-add" id="addExp">+ Add Experience</button>
+  </section>
+
+  <!-- 3. Education -->
+  <section class="card">
+    <h2>3. Education <span class="opt">(optional)</span></h2>
+    <div id="eduBox"></div>
+    <button type="button" class="btn-add" id="addEdu">+ Add Education</button>
+  </section>
+
+  <!-- 4. Projects -->
+  <section class="card">
+    <h2>4. Projects <span class="opt">(optional)</span></h2>
+    <div id="projBox"></div>
+    <button type="button" class="btn-add" id="addProj">+ Add Project</button>
+  </section>
+
+  <!-- 5. Skills -->
+  <section class="card">
+    <h2>5. Skills <span class="opt">(optional)</span></h2>
+    <p class="hint">Click <strong>Add Skill</strong>, search, and click a skill to add it. Then choose how expert you are.</p>
+    <div class="picker" id="skillPicker" data-prefix="skill" data-noun="Skill">
+      <div class="chips"></div>
+      <button type="button" class="btn-add picker-toggle">+ Add Skill</button>
+      <div class="picker-panel" hidden>
+        <input type="text" class="picker-input" placeholder="Search skill...">
+        <div class="picker-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Languages -->
+  <section class="card">
+    <h2>6. Languages <span class="opt">(optional)</span></h2>
+    <div class="picker" id="languagePicker" data-prefix="language" data-noun="Language">
+      <div class="chips"></div>
+      <button type="button" class="btn-add picker-toggle">+ Add Language</button>
+      <div class="picker-panel" hidden>
+        <input type="text" class="picker-input" placeholder="Search language...">
+        <div class="picker-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Social -->
+  <section class="card">
+    <h2>7. Social Links <span class="opt">(optional)</span></h2>
+    <div id="socialBox"></div>
+    <button type="button" class="btn-add" id="addSocial">+ Add Social Link</button>
+  </section>
+
+  <!-- 8. Certificates -->
+  <section class="card">
+    <h2>8. Certificates <span class="opt">(optional)</span></h2>
+    <label>One certificate per line
+      <textarea name="certificates" rows="3" placeholder="e.g. Python for Everybody - Coursera (2024)"></textarea>
+    </label>
+  </section>
+
+  <button type="submit" class="btn-cta big full">Generate My CV</button>
+</form>
+</main>
+
+<!-- Templates for repeatable blocks -->
+<template id="tplExp">
+  <div class="entry" data-label="Experience">
+    <div class="entry-head"><span class="entry-title"></span>
+      <button type="button" class="entry-remove">Remove</button></div>
+    <div class="grid">
+      <label>Job Title<input type="text" name="exp_title" placeholder="e.g. Web Developer"></label>
+      <label>Company<input type="text" name="exp_company"></label>
+      <label>Period<input type="text" name="exp_period" placeholder="Jan 2022 - Present"></label>
+    </div>
+    <label>Responsibilities / Achievements (one point per line)
+      <textarea name="exp_desc" rows="3"></textarea></label>
+  </div>
+</template>
+
+<template id="tplEdu">
+  <div class="entry" data-label="Education">
+    <div class="entry-head"><span class="entry-title"></span>
+      <button type="button" class="entry-remove">Remove</button></div>
+    <div class="grid">
+      <label>Degree / Class<input type="text" name="edu_degree" placeholder="e.g. BS Computer Science / Intermediate / Matric"></label>
+      <label>School / College / University Name<input type="text" name="edu_school"></label>
+      <label>Period<input type="text" name="edu_period" placeholder="2020 - 2024"></label>
+      <label>Grade / CGPA<input type="text" name="edu_grade" placeholder="e.g. 3.6 / 4.0 or A+"></label>
+    </div>
+  </div>
+</template>
+
+<template id="tplProj">
+  <div class="entry" data-label="Project">
+    <div class="entry-head"><span class="entry-title"></span>
+      <button type="button" class="entry-remove">Remove</button></div>
+    <div class="grid">
+      <label>Project Name<input type="text" name="proj_name"></label>
+      <label>Project Link <span class="opt">(optional)</span><input type="text" name="proj_link" placeholder="github.com/you/project"></label>
+    </div>
+    <label>Description (one point per line)
+      <textarea name="proj_desc" rows="3"></textarea></label>
+  </div>
+</template>
+
+<template id="tplSocial">
+  <div class="entry compact" data-label="Link">
+    <div class="entry-head"><span class="entry-title"></span>
+      <button type="button" class="entry-remove">Remove</button></div>
+    <div class="grid">
+      <label>Platform
+        <select name="social_type" class="social-type">
+          <option>GitHub</option><option>LinkedIn</option><option>Facebook</option>
+          <option>Instagram</option><option>Twitter / X</option><option>YouTube</option>
+          <option>Behance</option><option>Other</option>
+        </select></label>
+      <label class="social-label-wrap" hidden>Platform Name
+        <input type="text" name="social_label" placeholder="e.g. Dribbble"></label>
+      <label>Profile URL<input type="text" name="social_url" placeholder="github.com/username"></label>
+    </div>
+  </div>
+</template>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/form.js') }}"></script>
+{% endblock %}

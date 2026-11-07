@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ cv.name }} - CV | ProCV{% endblock %}
+{% block content %}
+<section class="preview-wrap">
+  <div class="preview-bar">
+    <a class="btn-sec" href="{{ url_for('create_cv') }}">&larr; Create New CV</a>
+    <a class="btn-cta big" href="{{ url_for('download', cv_id=cv_id) }}">Download PDF</a>
+  </div>
+
+  <div class="preview-pages">
+    {% if pages %}
+      {% for i in range(pages) %}
+      <img class="page-img" src="{{ url_for('page_image', cv_id=cv_id, n=i) }}" alt="CV page {{ i + 1 }}">
+      {% endfor %}
+    {% else %}
+      <object class="page-obj" data="{{ url_for('download', cv_id=cv_id, inline=1) }}" type="application/pdf">
+        <p>Preview is not available. <a href="{{ url_for('download', cv_id=cv_id) }}">Download the PDF</a>.</p>
+      </object>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

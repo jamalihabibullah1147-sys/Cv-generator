@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="pill">Free &middot; Fast &middot; Job-ready</span>
+    <h1>Build a Professional CV<br>in Minutes</h1>
+    <p>ProCV is a web-based CV generator. Enter your details, add your photo, skills and experience,
+       and download a clean, professionally designed PDF that is ready to send to employers.</p>
+    <div class="hero-actions">
+      <a class="btn-cta big" href="{{ url_for('create_cv') }}">Create CV</a>
+      <a class="btn-ghost" href="#features">Learn more</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="wrap narrow center">
+    <h2 class="section-title">About the Project</h2>
+    <p class="lead">Writing a good CV is hard when you do not know how to format it. ProCV solves this:
+      the user fills in a simple form, and the system automatically creates a well-structured,
+      A4-sized CV with a modern design, so anyone can apply for jobs with confidence.</p>
+  </div>
+</section>
+
+<section class="section alt" id="features">
+  <div class="wrap">
+    <h2 class="section-title center">Main Features</h2>
+    <div class="cards">
+      <div class="feature"><div class="ico">1</div><h3>Simple Step-by-Step Form</h3>
+        <p>Personal details, profile photo, summary, phone, email and address in one clean form.</p></div>
+      <div class="feature"><div class="ico">2</div><h3>Optional Sections</h3>
+        <p>Add work experience, education and projects only if you need them, and use <em>Add</em> buttons for more.</p></div>
+      <div class="feature"><div class="ico">3</div><h3>Smart Skill &amp; Language Picker</h3>
+        <p>Search from a big list, click to add, and rate your level from Beginner to Expert.</p></div>
+      <div class="feature"><div class="ico">4</div><h3>Links &amp; Portfolio</h3>
+        <p>Add GitHub, LinkedIn, Facebook or any other social link, plus your portfolio and project links.</p></div>
+      <div class="feature"><div class="ico">5</div><h3>Education Details</h3>
+        <p>Record school, college or university name with degree, period and grade.</p></div>
+      <div class="feature"><div class="ico">6</div><h3>Instant PDF Download</h3>
+        <p>Preview your CV on screen and download a professional PDF with one click.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="wrap">
+    <h2 class="section-title center">How It Works</h2>
+    <div class="steps">
+      <div class="step"><span>1</span><h3>Click Create CV</h3><p>Open the form from the button in the header.</p></div>
+      <div class="step"><span>2</span><h3>Enter Your Details</h3><p>Fill in what you need and skip what you don't.</p></div>
+      <div class="step"><span>3</span><h3>Download PDF</h3><p>Preview the result and download your CV.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap narrow center">
+    <h2 class="section-title">Technologies Used</h2>
+    <div class="tags">
+      <span>Python</span><span>Flask</span><span>HTML5</span><span>CSS3</span>
+      <span>JavaScript</span><span>xhtml2pdf</span><span>Pillow</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="team">
+  <div class="wrap">
+    <h2 class="section-title center">Meet the Developers</h2>
+    <div class="team">
+      {% for m in team %}
+      <div class="member">
+        {% if m.file %}
+          <img src="{{ url_for('static', filename=m.file) }}" alt="{{ m.name }}">
+        {% else %}
+          <div class="avatar">{{ m.initials }}</div>
+        {% endif %}
+        <h3>{{ m.name }}</h3>
+        <p class="muted">{{ m.role }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <h2>Ready to build your CV?</h2>
+  <a class="btn-cta big light" href="{{ url_for('create_cv') }}">Create CV Now</a>
+</section>
+{% endblock %}
